@@ -32,7 +32,11 @@ jobs:
         REGISTRY: ghcr.io
         IMAGE_NAME: ${{ github.repository }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        EVENT_NAME: ${{ github.event_name }}
+        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        SHORT_SHA: ${{ github.sha }}
       run: |
         docker login $REGISTRY -u ${{ github.repository_owner }} -p "$GITHUB_TOKEN"
-        docker build -t $REGISTRY/$IMAGE_NAME .
-        docker push $REGISTRY/$IMAGE_NAME:latest
+        TAG_NAME=$(echo "$EVENT_NAME-$BRANCH_NAME-$SHORT_SHA" | sed 's/\//-/g')  # 例: push-main-asdfgh...
+        docker build -t $REGISTRY/$IMAGE_NAME:$TAG_NAME .
+        docker push $REGISTRY/$IMAGE_NAME:$TAG_NAME
