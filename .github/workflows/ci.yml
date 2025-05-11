@@ -30,7 +30,7 @@ jobs:
       if: success()
       env:
         REGISTRY: ghcr.io
-        IMAGE_NAME: ${{ github.repository }}
+        IMAGE_NAME: ${{ github.repository }}-flaskapp
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         EVENT_NAME: ${{ github.event_name }}
         BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
