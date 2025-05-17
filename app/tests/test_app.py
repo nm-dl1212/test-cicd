@@ -1,20 +1,22 @@
-import unittest
-import json
+import pytest
 from app import app
 
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
 
-class TestApp(unittest.TestCase):
+def test_hello(client):
+    response = client.get('/hello')
+    assert response.status_code == 200
+    assert response.get_json() == {"message": "hello-world"}
 
-    def setUp(self):
-        self.app = app.test_client()
-        self.app.testing = True
+def test_calc_success(client):
+    response = client.get('/calc?a=3&b=4')
+    assert response.status_code == 200
+    assert response.get_json() == {"message": "multiple result is 12.0"}
 
-    def test_hello_world(self):
-        response = self.app.get("/hello")
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.get_data(as_text=True))
-        self.assertEqual(data["message"], "hello-world")
-
-
-if __name__ == "__main__":
-    unittest.main()
+def test_calc_missing_param(client):
+    response = client.get('/calc?a=3')
+    assert response.status_code == 400
+    assert "error" in response.get_json()
