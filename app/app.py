@@ -15,7 +15,7 @@ def calculation():
         return jsonify({"error": "Parameters 'a' and 'b' are required."}), 400
 
     multiple_result = a * b
-    return jsonify({"message": f"multiple is {multiple_result}"})
+    return jsonify({"message": f"multiple result is {multiple_result}"})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
