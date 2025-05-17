@@ -14,8 +14,8 @@ def calculation():
     if a is None or b is None:
         return jsonify({"error": "Parameters 'a' and 'b' are required."}), 400
 
-    sum_result = a + b
-    return jsonify({"message": f"sum is {sum_result}"})
+    multiple_result = a * b
+    return jsonify({"message": f"multiple is {multiple_result}"})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
